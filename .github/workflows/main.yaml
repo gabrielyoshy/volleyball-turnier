@@ -25,5 +25,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: volleyball-turnier/dist/browser
-          branch: main  
+          branch: prod  
           token: ${{ secrets.GH_TOKEN }}
