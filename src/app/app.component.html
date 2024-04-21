@@ -1,0 +1,9 @@
+<ul>
+  @for(item of items$ | async; track item.id) {
+  <li class="text">
+    {{ item.name }}
+  </li>
+  }
+</ul>
+
+<button (click)="add()">Add Item</button>

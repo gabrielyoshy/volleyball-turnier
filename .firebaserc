@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "volleyball-turnier-5199c": {
+      "hosting": {
+        "volleyball-turnier": [
+          "volleyball-turnier-5199c"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "volleyball-turnier-5199c"
+  }
+}
