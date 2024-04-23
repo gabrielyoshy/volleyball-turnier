@@ -1,1 +1,119 @@
-/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@include mat.core();
+$bright-navy-blue-palette: (
+  50: #e1eaf1,
+  100: #b3cbdb,
+  200: #80a9c3,
+  300: #4d86ab,
+  400: #276c99,
+  500: #015287,
+  600: #014b7f,
+  700: #014174,
+  800: #01386a,
+  900: #002857,
+  A100: #89b4ff,
+  A200: #5694ff,
+  A400: #2373ff,
+  A700: #0963ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+$gainsboro-palette: (
+  50: #e3e4e4,
+  100: #babbbb,
+  200: #8c8e8e,
+  300: #5e6060,
+  400: #3c3e3e,
+  500: #191c1c,
+  600: #161919,
+  700: #121414,
+  800: #0e1111,
+  900: #080909,
+  A100: #51ffff,
+  A200: #1effff,
+  A400: #00eaea,
+  A700: #00d0d0,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+$crimson-palette: (
+  50: #fff4f3,
+  100: #ffe3e0,
+  200: #ffd1cb,
+  300: #ffbeb6,
+  400: #ffb0a7,
+  500: #ffa297,
+  600: #ff9a8f,
+  700: #ff9084,
+  800: #ff867a,
+  900: #ff7569,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffffff,
+  A700: #fff2f1,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+$bluesky-primary: mat.define-palette($bright-navy-blue-palette, 500, 300, 700);
+$bluesky-accent: mat.define-palette($gainsboro-palette, 300, 100, 500);
+$bluesky-warn: mat.define-palette($crimson-palette, 700);
+$bluesky-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $bluesky-primary,
+      accent: $bluesky-accent,
+      warn: $bluesky-warn,
+    ),
+  )
+);
+@include mat.all-component-themes($bluesky-theme);
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
