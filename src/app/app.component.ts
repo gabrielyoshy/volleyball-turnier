@@ -8,11 +8,12 @@ import {
 } from '@angular/fire/firestore';
 import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, MatButtonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
