@@ -1,0 +1,33 @@
+{
+  "title": "TurnierMeister Bornheim",
+  "menu": {
+    "home": "Startseite",
+    "tournaments": "Turniere"
+  },
+  "tournament": {
+    "title": "Turnier",
+    "name": "Name",
+    "date": "Datum",
+    "location": "Ort",
+    "new": "Neues Turnier"
+  },
+  "global": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "add": "Hinzufügen",
+    "close": "Schließen",
+    "yes": "Ja",
+    "no": "Nein",
+    "confirm": "Bestätigen",
+    "error": "Fehler",
+    "warning": "Warnung",
+    "info": "Info",
+    "success": "Erfolg",
+    "search": "Suchen",
+    "loading": "Lade...",
+    "starDate": "Startdatum",
+    "endDate": "Enddatum"
+  }
+}

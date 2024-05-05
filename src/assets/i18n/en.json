@@ -1,0 +1,12 @@
+{
+  "title": "TurnierMeister Bornheim",
+  "menu": {
+    "home": "asdasdas",
+    "tournaments": "Turniere",
+    "teams": "Mannschaften",
+    "players": "Spieler",
+    "games": "Spiele",
+    "statistics": "Statistiken",
+    "admin": "Administration"
+  }
+}

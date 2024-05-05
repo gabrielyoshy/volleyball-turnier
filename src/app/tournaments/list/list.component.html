@@ -1,0 +1,12 @@
+<button class="add-button" (click)="createNewTournament()">
+  <mat-icon>add</mat-icon>
+  <span>{{ 'tournament.new' | translate }}</span>
+</button>
+<ul>
+  @for (tournament of tournaments$ | async; track tournament.id) {
+    <li>
+      <span>{{ tournament.name }}</span>
+      <button (click)="deleteTournament(tournament.id)">delete</button>
+    </li>
+  }
+</ul>

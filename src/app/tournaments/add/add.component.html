@@ -1,0 +1,35 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label>{{ 'tournament.name' | translate }}</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'tournament.date' | translate }}</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input
+        matStartDate
+        formControlName="startDate"
+        [placeholder]="'global.startDate' | translate" />
+      <input
+        matEndDate
+        formControlName="endDate"
+        [placeholder]="'global.endDate' | translate" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'tournament.location' | translate }}</mat-label>
+    <input matInput formControlName="location" />
+  </mat-form-field>
+</form>
+
+<button
+  mat-flat-button
+  class="primary"
+  [disabled]="form.invalid"
+  (click)="save()">
+  {{ 'global.save' | translate }}
+</button>
