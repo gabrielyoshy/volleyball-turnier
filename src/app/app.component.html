@@ -1,9 +1,31 @@
-<ul>
-  @for(item of items$ | async; track item.id) {
-  <li class="text">
-    {{ item.name }}
-  </li>
-  }
-</ul>
+<header>
+  <button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
 
-<button (click)="add()">Add Item</button>
+  <h1>Bornheim Turnier</h1>
+</header>
+
+<mat-drawer-container hasBackdrop="true">
+  <mat-drawer #drawer mode="side">
+    <mat-nav-list>
+      <a
+        (click)="drawer.toggle()"
+        mat-list-item
+        routerLink="/home"
+        routerLinkActive="active">
+        {{ 'menu.home' | translate }}
+      </a>
+      <a
+        (click)="drawer.toggle()"
+        mat-list-item
+        routerLink="/tournaments"
+        routerLinkActive="active">
+        {{ 'menu.tournaments' | translate }}
+      </a>
+    </mat-nav-list>
+  </mat-drawer>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</mat-drawer-container>

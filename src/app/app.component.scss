@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+header {
+  display: flex;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+}
+
+mat-drawer-container {
+  height: 100%;
+}
+
+main {
+  padding: 10px;
+  height: calc(100% - 20px);
+}

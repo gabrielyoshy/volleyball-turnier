@@ -1,33 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  Firestore,
-  collection,
-  collectionData,
-  addDoc,
-} from '@angular/fire/firestore';
-import { RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { Title } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [
+    RouterModule,
+    CommonModule,
+    TranslateModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  firestore: Firestore = inject(Firestore);
-  items$: Observable<any[]>;
-
-  constructor() {
-    const aCollection = collection(this.firestore, 'tournaments');
-    this.items$ = collectionData(aCollection);
-  }
-
-  async add() {
-    await addDoc(collection(this.firestore, 'tournaments'), {
-      name: 'new tournamentaaaaaaaaaaa',
-    });
+  constructor(private titleService: Title) {
+    this.titleService.setTitle('Bornheim Turnier');
   }
 }

@@ -1,0 +1,17 @@
+.add-button {
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 150px;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+}

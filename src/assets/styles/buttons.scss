@@ -1,0 +1,4 @@
+button.primary:not(.mat-mdc-button-disabled) {
+  background-color: var(--button-primary-color) !important;
+  color: var(--button-primary-contrast-color) !important;
+}
