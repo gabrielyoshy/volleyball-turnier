@@ -5,7 +5,7 @@
   </button>
   <ul>
     @for (tournament of tournaments$ | async; track tournament.id) {
-      <li (click)="showTournament(tournament.id)">
+      <li (click)="showTournament(tournament)">
         <figure></figure>
         <div class="description">
           <h4 class="name">{{ tournament.name }}</h4>

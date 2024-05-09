@@ -9,7 +9,12 @@
     "name": "Name",
     "date": "Datum",
     "location": "Ort",
-    "new": "Neues Turnier"
+    "new": "Neues Turnier",
+    "teams": {
+      "title": "Teams",
+      "create": "Neues Team",
+      "name": "Name"
+    }
   },
   "global": {
     "save": "Speichern",

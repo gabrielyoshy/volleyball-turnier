@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ 'tournament.teams.create' | translate }}</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>{{ 'tournament.teams.name' | translate }}</mat-label>
+    <input matInput [formControl]="nameControl" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">
+    {{ 'global.cancel' | translate }}
+  </button>
+  <button mat-button (click)="addTeam()" cdkFocusInitial>
+    {{ 'global.confirm' | translate }}
+  </button>
+</mat-dialog-actions>

@@ -5,6 +5,7 @@ export interface Tournament {
   startDate: Date;
   endDate: Date;
   location: string;
+  startTime: string;
   teams: Team[];
 }
 

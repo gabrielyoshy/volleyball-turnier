@@ -1,46 +1,70 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   Firestore,
-  getDoc,
-  DocumentReference,
   doc,
   deleteDoc,
+  getDoc,
+  collection,
+  getDocs,
 } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Tournament } from '../interfaces';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { TournamentState } from '../../store/tournament.store';
+import { GeneralDataComponent } from './general-data/general-data.component';
+import { PositionsComponent } from './positions/positions.component';
+import { RoundsComponent } from './rounds/rounds.component';
+import { TeamsComponent } from './teams/teams.component';
+import { Team, Tournament } from '../interfaces';
+import { LoadingComponent } from '../../share/loading/loading.component';
 
 @Component({
   selector: 'app-tournement-show',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatTabsModule],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatTabsModule,
+    GeneralDataComponent,
+    PositionsComponent,
+    RoundsComponent,
+    TeamsComponent,
+    LoadingComponent,
+  ],
   templateUrl: './tournement-show.component.html',
   styleUrl: './tournement-show.component.scss',
 })
-export class TournementShowComponent implements OnInit {
+export class TournementShowComponent {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   firestore: Firestore = inject(Firestore);
-  id = this.activatedRoute.snapshot.paramMap.get('id');
+  store = inject(TournamentState);
 
-  tournament?: Tournament;
+  loading = true;
 
   async ngOnInit() {
-    if (!this.id) {
-      return;
-    }
-    const docRef = doc(this.firestore, 'tournaments', this.id);
-    this.tournament = (await getDoc(docRef)).data() as Tournament | undefined;
-  }
-
-  async deleteTournament() {
-    if (!this.id) {
-      return;
+    const tournamentId = this.activatedRoute.snapshot.paramMap.get('id');
+    if (!tournamentId) {
+      this.loading = false;
+      throw new Error('No tournament selected');
     }
 
-    await deleteDoc(doc(this.firestore, 'tournaments', this.id));
-    this.router.navigate(['tournaments', 'list']);
+    const docRef = doc(this.firestore, 'tournaments', tournamentId);
+    const tournament = (await getDoc(docRef)).data() as Tournament | undefined;
+
+    if (tournament) {
+      const teamsCollectionRef = collection(docRef, 'teams');
+      const teamSnapshot = await getDocs(teamsCollectionRef);
+
+      const teams = teamSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Team[];
+
+      this.store.selectTournament({ ...tournament, id: tournamentId, teams });
+      this.loading = false;
+    }
   }
 }
