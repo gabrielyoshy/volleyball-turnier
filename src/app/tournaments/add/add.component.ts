@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add',
@@ -32,19 +33,27 @@ import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 export class AddComponent {
   formBuilder = inject(FormBuilder);
   firestore: Firestore = inject(Firestore);
+  router = inject(Router);
 
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
     startDate: ['', [Validators.required]],
     endDate: ['', [Validators.required]],
     location: ['', [Validators.required]],
+    startTime: ['', [Validators.required]],
   });
 
   async save() {
     if (this.form.valid) {
       await addDoc(collection(this.firestore, 'tournaments'), {
-        ...this.form.value,
+        name: this.form.value.name,
+        startDate: this.form.value.startDate?.toString(),
+        endDate: this.form.value.endDate?.toString(),
+        location: this.form.value.location,
+        startTime: this.form.value.startTime,
       });
+
+      this.router.navigate(['/tournaments']);
     }
   }
 }

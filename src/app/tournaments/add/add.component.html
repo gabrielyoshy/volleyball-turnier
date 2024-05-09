@@ -24,6 +24,11 @@
     <mat-label>{{ 'tournament.location' | translate }}</mat-label>
     <input matInput formControlName="location" />
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'tournament.startTime' | translate }}</mat-label>
+    <input matInput type="time" formControlName="startTime" />
+  </mat-form-field>
 </form>
 
 <button

@@ -1,3 +1,8 @@
+main {
+  padding: 10px;
+  height: 100%;
+}
+
 .add-button {
   border: 1px solid var(--border-color);
   border-radius: 5px;
@@ -11,7 +16,40 @@
   min-height: 150px;
 }
 
-li {
+ul {
+  list-style-type: none;
+  padding: 0;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+}
+
+li {
+  display: grid;
+  grid-template-columns: min-content 1fr min-content min-content;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  align-items: center;
+
+  figure {
+    margin: 0;
+    width: 5px;
+    height: 50px;
+    background-color: var(--success-color);
+    border-radius: 3px;
+  }
+}
+
+.description {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+
+  h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    grid-column: span 2;
+  }
 }

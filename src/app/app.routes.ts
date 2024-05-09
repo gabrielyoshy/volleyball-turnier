@@ -35,6 +35,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./tournaments/add/add.component').then(m => m.AddComponent),
       },
+      {
+        path: 'show/:id',
+        loadComponent: () =>
+          import(
+            './tournaments/tournement-show/tournement-show.component'
+          ).then(m => m.TournementShowComponent),
+      },
     ],
   },
 ];

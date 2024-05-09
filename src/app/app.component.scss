@@ -18,6 +18,17 @@ mat-drawer-container {
 }
 
 main {
-  padding: 10px;
-  height: calc(100% - 20px);
+  height: 100%;
+}
+
+mat-nav-list {
+  min-width: 200px;
+}
+
+:host ::ng-deep {
+  .mdc-tab--active {
+    mat-icon {
+      color: var(--secondary-color);
+    }
+  }
 }

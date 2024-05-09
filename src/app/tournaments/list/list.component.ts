@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
-  DocumentData,
   Firestore,
   collection,
   collectionData,
@@ -45,7 +44,7 @@ export class ListComponent {
     this.router.navigate(['tournaments', 'add']);
   }
 
-  async deleteTournament(id: string) {
-    await deleteDoc(doc(this.firestore, 'tournaments', id));
+  showTournament(id: string) {
+    this.router.navigate(['tournaments', 'show', id]);
   }
 }
