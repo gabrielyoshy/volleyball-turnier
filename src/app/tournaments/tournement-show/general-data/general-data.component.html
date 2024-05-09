@@ -1,6 +1,36 @@
 <header>
-  <h2>{{ 'tournament.teams.generalData' | translate }}</h2>
+  <h2>{{ tournament()?.name }}</h2>
   <button mat-icon-button (click)="deleteTournament()">
     <mat-icon>delete</mat-icon>
   </button>
 </header>
+
+<ul>
+  <li>
+    <button mat-icon-button (click)="changeTypeToLeft()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <p>
+      {{
+        'tournament.general.types.' + tournamentTypes[selectedTypeIndex]
+          | translate
+      }}
+    </p>
+    <button class="right" mat-icon-button (click)="changeTypeToRight()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </li>
+
+  <li>
+    <button mat-icon-button (click)="removeRound()">
+      <mat-icon>remove</mat-icon>
+    </button>
+    <p>
+      {{ 'tournament.general.numberOfRounds' | translate }}
+      {{ numberOfRounds }}
+    </p>
+    <button class="right" mat-icon-button (click)="addRound()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </li>
+</ul>

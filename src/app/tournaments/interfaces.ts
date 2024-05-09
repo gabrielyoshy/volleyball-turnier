@@ -7,6 +7,25 @@ export interface Tournament {
   location: string;
   startTime: string;
   teams: Team[];
+  type?: string;
+  numberOfRounds?: string;
+  rounds?: Round[];
+}
+
+export interface Round {
+  id: string;
+  number: number;
+  matches: Match[];
+}
+
+export interface Match {
+  id: string;
+  team1: Team;
+  team2: Team;
+  score1: number;
+  score2: number;
+  winner: Team;
+  loser: Team;
 }
 
 export interface Team {

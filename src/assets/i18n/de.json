@@ -10,6 +10,14 @@
     "date": "Datum",
     "location": "Ort",
     "new": "Neues Turnier",
+    "general": {
+      "types": {
+        "swiss": "Schweizer System",
+        "playoffs": "Playoff System",
+        "combined": "Kombination"
+      },
+      "numberOfRounds": "Anzahl Runden:"
+    },
     "teams": {
       "title": "Teams",
       "create": "Neues Team",
