@@ -6,7 +6,7 @@
 </header>
 
 <ul>
-  <li>
+  <li class="tournament">
     <button mat-icon-button (click)="changeTypeToLeft()">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
@@ -21,7 +21,7 @@
     </button>
   </li>
 
-  <li>
+  <li class="rounds">
     <button mat-icon-button (click)="removeRound()">
       <mat-icon>remove</mat-icon>
     </button>
@@ -32,5 +32,16 @@
     <button class="right" mat-icon-button (click)="addRound()">
       <mat-icon>add</mat-icon>
     </button>
+
+    <span>{{
+      'tournament.general.numberOfTeams'
+        | translate: { numberOfTeams: numberOfTeams() }
+    }}</span>
+    <span>
+      {{
+        'tournament.general.recommendedNumberOfRounds'
+          | translate: { recommendedNumberOfRounds: recomendedNumberOfRounds() }
+      }}
+    </span>
   </li>
 </ul>

@@ -16,6 +16,8 @@
         "playoffs": "Playoff System",
         "combined": "Kombination"
       },
+      "numberOfTeams": "Anzahl der Teams: {{numberOfTeams}}",
+      "recommendedNumberOfRounds": "Empfohlene Anzahl Runden: {{recommendedNumberOfRounds}}",
       "numberOfRounds": "Anzahl Runden:"
     },
     "teams": {

@@ -19,6 +19,10 @@ export class GeneralDataComponent {
   firestore: Firestore = inject(Firestore);
 
   tournament = computed(() => this.store.selectedTournament());
+  numberOfTeams = computed(() => this.tournament()?.teams.length || 0);
+  recomendedNumberOfRounds = computed(() =>
+    Math.ceil(Math.log2(this.numberOfTeams()))
+  );
   tournamentTypes = ['swiss', 'playoffs', 'combined'];
   selectedTypeIndex = 0;
   numberOfRounds = 5;
