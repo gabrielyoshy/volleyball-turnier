@@ -6,7 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { TournamentState } from '../../../../store/tournament.store';
+import { Store } from '../../../../store/tournament.store';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
@@ -29,7 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './add-team.component.scss',
 })
 export class AddTeamComponent {
-  store = inject(TournamentState);
+  store = inject(Store);
   nameControl = new FormControl('', [Validators.required]);
 
   constructor(public dialogRef: MatDialogRef<AddTeamComponent>) {}

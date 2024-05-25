@@ -1,5 +1,5 @@
 <header>
-  <h2>{{ tournament()?.name }}</h2>
+  <h2>{{ store.name() }}</h2>
   <button mat-icon-button (click)="deleteTournament()">
     <mat-icon>delete</mat-icon>
   </button>
@@ -11,10 +11,7 @@
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
     <p>
-      {{
-        'tournament.general.types.' + tournamentTypes[selectedTypeIndex]
-          | translate
-      }}
+      {{ 'tournament.general.types.' + store.type() | translate }}
     </p>
     <button class="right" mat-icon-button (click)="changeTypeToRight()">
       <mat-icon>keyboard_arrow_right</mat-icon>
@@ -27,7 +24,7 @@
     </button>
     <p>
       {{ 'tournament.general.numberOfRounds' | translate }}
-      {{ numberOfRounds }}
+      {{ store.rounds().length }}
     </p>
     <button class="right" mat-icon-button (click)="addRound()">
       <mat-icon>add</mat-icon>
@@ -35,7 +32,7 @@
 
     <span>{{
       'tournament.general.numberOfTeams'
-        | translate: { numberOfTeams: numberOfTeams() }
+        | translate: { numberOfTeams: store.numberOfTeams() }
     }}</span>
     <span>
       {{

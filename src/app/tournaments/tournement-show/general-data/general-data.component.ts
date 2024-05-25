@@ -1,10 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
-import { Firestore, deleteDoc, doc } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { TournamentState } from '../../../store/tournament.store';
+import { Store } from '../../../store/tournament.store';
+import { TournamentType } from '../../interfaces';
 
 @Component({
   selector: 'app-general-data',
@@ -14,27 +15,19 @@ import { TournamentState } from '../../../store/tournament.store';
   styleUrl: './general-data.component.scss',
 })
 export class GeneralDataComponent {
-  store = inject(TournamentState);
+  store = inject(Store);
   router = inject(Router);
   firestore: Firestore = inject(Firestore);
 
-  tournament = computed(() => this.store.selectedTournament());
-  numberOfTeams = computed(() => this.tournament()?.teams.length || 0);
-  recomendedNumberOfRounds = computed(() =>
-    Math.ceil(Math.log2(this.numberOfTeams()))
-  );
-  tournamentTypes = ['swiss', 'playoffs', 'combined'];
+  tournamentTypes = Object.values(TournamentType);
   selectedTypeIndex = 0;
-  numberOfRounds = 5;
 
-  async deleteTournament() {
-    const tournamentId = this.store.selectedTournament()?.id;
-    if (!tournamentId) {
-      return;
-    }
+  recomendedNumberOfRounds = computed(() =>
+    Math.ceil(Math.log2(this.store.numberOfTeams()))
+  );
 
-    await deleteDoc(doc(this.firestore, 'tournaments', tournamentId));
-    this.router.navigate(['tournaments', 'list']);
+  deleteTournament() {
+    this.store.deleteTournament();
   }
 
   changeTypeToLeft() {
@@ -43,6 +36,7 @@ export class GeneralDataComponent {
     } else {
       this.selectedTypeIndex = this.tournamentTypes.length - 1;
     }
+    this.store.setTournamentType(this.tournamentTypes[this.selectedTypeIndex]);
   }
 
   changeTypeToRight() {
@@ -51,17 +45,17 @@ export class GeneralDataComponent {
     } else {
       this.selectedTypeIndex = 0;
     }
+    this.store.setTournamentType(this.tournamentTypes[this.selectedTypeIndex]);
   }
 
   removeRound() {
-    if (this.numberOfRounds > 1) {
-      this.numberOfRounds--;
+    const numberOfRounds = this.store.rounds().length;
+    if (numberOfRounds > 0) {
+      this.store.deletelastRound();
     }
   }
 
   addRound() {
-    if (this.numberOfRounds < 20) {
-      this.numberOfRounds++;
-    }
+    this.store.addNewRound();
   }
 }

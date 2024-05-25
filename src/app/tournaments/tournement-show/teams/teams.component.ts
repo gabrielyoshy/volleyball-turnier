@@ -2,7 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { TournamentState } from '../../../store/tournament.store';
+import { Store } from '../../../store/tournament.store';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTeamComponent } from './add-team/add-team.component';
 
@@ -14,10 +14,8 @@ import { AddTeamComponent } from './add-team/add-team.component';
   styleUrl: './teams.component.scss',
 })
 export class TeamsComponent {
-  store = inject(TournamentState);
+  store = inject(Store);
   dialog = inject(MatDialog);
-
-  teams = computed(() => this.store.selectedTournament()?.teams);
 
   addNewTeam() {
     this.dialog.open(AddTeamComponent);

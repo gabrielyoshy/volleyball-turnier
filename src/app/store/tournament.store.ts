@@ -1,87 +1,144 @@
-import { signalStore, withMethods, withState, patchState } from '@ngrx/signals';
-import { Tournament } from '../tournaments/interfaces';
+import {
+  signalStore,
+  withMethods,
+  withState,
+  patchState,
+  withComputed,
+} from '@ngrx/signals';
+import {
+  Match,
+  RoundStatus,
+  Team,
+  Tournament,
+  TournamentType,
+} from '../tournaments/interfaces';
 import { Router } from '@angular/router';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import {
   Firestore,
   doc,
-  getDoc,
-  addDoc,
-  collection,
   deleteDoc,
+  updateDoc,
+  arrayUnion,
 } from '@angular/fire/firestore';
 
-type TournamentState = {
-  selectedTournament: Tournament | null;
+const initialState: Tournament = {
+  id: '',
+  name: '',
+  description: '',
+  startDate: new Date(),
+  endDate: new Date(),
+  location: '',
+  startTime: '',
+  teams: [],
+  type: TournamentType.Swiss,
+  rounds: [],
 };
 
-const initialState: TournamentState = {
-  selectedTournament: null,
-};
-
-export const TournamentState = signalStore(
+export const Store = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withComputed(({ teams, rounds }) => ({
+    numberOfTeams: computed(() => teams().length),
+    numberOfRounds: computed(() => rounds().length),
+  })),
   withMethods((store, firestore = inject(Firestore)) => ({
     selectTournament: (tournament: Tournament) => {
-      patchState(store, { selectedTournament: tournament });
+      patchState(store, tournament);
+    },
+
+    deleteTournament: async () => {
+      const tournamentId = store.id();
+      if (!tournamentId) {
+        return;
+      }
+      await deleteDoc(doc(firestore, 'tournaments', tournamentId));
+      inject(Router).navigate(['tournaments', 'list']);
     },
 
     addNewTeam: async (teamName: string) => {
-      const tournament = store.selectedTournament();
-      if (!tournament) {
-        throw new Error('No tournament selected');
-      }
-
-      console.log('Adding new team', teamName);
-
-      const teamsCollectionRef = collection(
-        firestore,
-        'tournaments',
-        tournament.id,
-        'teams'
-      );
-
-      const teamRef = await addDoc(teamsCollectionRef, {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const newTeam = {
+        id: Math.random().toString(36).substring(2, 15),
         name: teamName,
         players: [],
+        points: 0,
+      };
+      await updateDoc(tournamentDocRef, {
+        teams: arrayUnion(newTeam),
       });
-
+      const teams = [...store.teams(), newTeam];
       patchState(store, {
-        selectedTournament: {
-          ...tournament,
-          teams: [
-            ...(tournament.teams || []),
-            { id: teamRef.id, name: teamName, players: [] },
-          ],
-        },
+        teams,
       });
     },
 
     deleteTeam: async (teamId: string) => {
-      const tournament = store.selectedTournament();
-      if (!tournament) {
-        throw new Error('No tournament selected');
-      }
-
-      console.log('############# Deleting team', teamId);
-
-      const teams = (tournament.teams || []).filter(team => team.id !== teamId);
-
-      const teamDocRef = doc(
-        firestore,
-        'tournaments',
-        tournament.id,
-        'teams',
-        teamId
-      );
-      await deleteDoc(teamDocRef);
-
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const teams = store.teams().filter(team => team.id !== teamId);
+      await updateDoc(tournamentDocRef, {
+        teams,
+      });
       patchState(store, {
-        selectedTournament: {
-          ...tournament,
-          teams,
-        },
+        teams,
+      });
+    },
+
+    addNewRound: async () => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const round = {
+        id: Math.random().toString(36).substring(2, 15),
+        number: store.rounds().length + 1,
+        matches: [],
+        status: RoundStatus.NotStarted,
+      };
+      const rounds = [...store.rounds(), round];
+      await updateDoc(tournamentDocRef, {
+        rounds,
+      });
+      patchState(store, {
+        rounds,
+      });
+    },
+
+    deletelastRound: async () => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const rounds = store.rounds().slice(0, -1);
+      await updateDoc(tournamentDocRef, {
+        rounds,
+      });
+      patchState(store, {
+        rounds,
+      });
+    },
+
+    startRound: async (roundId: string, matches: Match[]) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const rounds = store.rounds().map(round => {
+        if (round.id === roundId) {
+          return {
+            ...round,
+            matches,
+            status: RoundStatus.InProgress,
+          };
+        }
+        return round;
+      });
+      await updateDoc(tournamentDocRef, {
+        rounds,
+      });
+      patchState(store, {
+        rounds,
+      });
+    },
+
+    setTournamentType: async (type: TournamentType) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      await updateDoc(tournamentDocRef, {
+        type,
+      });
+      patchState(store, {
+        type,
       });
     },
   }))

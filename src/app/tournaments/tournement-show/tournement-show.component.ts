@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TournamentState } from '../../store/tournament.store';
+import { Store } from '../../store/tournament.store';
 import { GeneralDataComponent } from './general-data/general-data.component';
 import { PositionsComponent } from './positions/positions.component';
 import { RoundsComponent } from './rounds/rounds.component';
@@ -40,7 +40,7 @@ export class TournementShowComponent {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   firestore: Firestore = inject(Firestore);
-  store = inject(TournamentState);
+  store = inject(Store);
 
   loading = true;
 
@@ -55,15 +55,7 @@ export class TournementShowComponent {
     const tournament = (await getDoc(docRef)).data() as Tournament | undefined;
 
     if (tournament) {
-      const teamsCollectionRef = collection(docRef, 'teams');
-      const teamSnapshot = await getDocs(teamsCollectionRef);
-
-      const teams = teamSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Team[];
-
-      this.store.selectTournament({ ...tournament, id: tournamentId, teams });
+      this.store.selectTournament({ ...tournament, id: tournamentId });
       this.loading = false;
     }
   }

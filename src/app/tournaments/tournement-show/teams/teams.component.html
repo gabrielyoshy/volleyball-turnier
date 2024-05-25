@@ -6,7 +6,7 @@
 </header>
 
 <ul>
-  @for (team of teams(); track team.id) {
+  @for (team of store.teams(); track team.id) {
     <li>
       <span>{{ team.name }}</span>
       <button mat-icon-button (click)="deleteTeam(team.id)">

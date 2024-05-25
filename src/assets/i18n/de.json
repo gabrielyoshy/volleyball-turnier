@@ -24,6 +24,9 @@
       "title": "Teams",
       "create": "Neues Team",
       "name": "Name"
+    },
+    "rounds": {
+      "round": "Runde"
     }
   },
   "global": {

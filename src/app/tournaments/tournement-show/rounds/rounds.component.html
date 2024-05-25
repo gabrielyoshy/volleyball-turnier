@@ -1,1 +1,22 @@
-<p>rounds works!</p>
+@if (selectedRound()) {
+  <header>
+    <h2>
+      {{ 'tournament.rounds.round' | translate }}
+      {{ selectedRound()?.number }}
+    </h2>
+    <button (click)="startRound()" class="primary" mat-flat-button>
+      start
+    </button>
+  </header>
+
+  <ul>
+    @for (match of selectedRound()?.matches; track match.id) {
+      <li>
+        <span>{{ match.team1?.name }}</span>
+        <span> - </span>
+        <span>{{ match.team2?.name }}</span>
+        <span> - </span>
+      </li>
+    }
+  </ul>
+}
