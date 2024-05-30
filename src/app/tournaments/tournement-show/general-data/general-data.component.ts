@@ -21,6 +21,12 @@ export class GeneralDataComponent {
 
   tournamentTypes = Object.values(TournamentType);
   selectedTypeIndex = 0;
+  numberOfPlayOffsOptions = [4, 8, 16, 32];
+  selectedNumberOfPlayOffsIndex = 0;
+  RibbonTournamentNumberOptions = [1, 2, 3];
+  selectedRibbonTournamentNumberIndex = 0;
+  numberOfAvailableFieldsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  selectedNumberOfAvailableFieldsIndex = 0;
 
   recomendedNumberOfRounds = computed(() =>
     Math.ceil(Math.log2(this.store.numberOfTeams()))
@@ -57,5 +63,91 @@ export class GeneralDataComponent {
 
   addRound() {
     this.store.addNewRound();
+  }
+
+  changePlayOffRoundsToLeft() {
+    if (this.selectedNumberOfPlayOffsIndex > 0) {
+      this.selectedNumberOfPlayOffsIndex--;
+    } else {
+      this.selectedNumberOfPlayOffsIndex =
+        this.numberOfPlayOffsOptions.length - 1;
+    }
+    this.store.setNumberOfPlayOffs(
+      this.numberOfPlayOffsOptions[this.selectedNumberOfPlayOffsIndex]
+    );
+  }
+
+  changePlayOffRoundsToRight() {
+    if (
+      this.selectedNumberOfPlayOffsIndex <
+      this.numberOfPlayOffsOptions.length - 1
+    ) {
+      this.selectedNumberOfPlayOffsIndex++;
+    } else {
+      this.selectedNumberOfPlayOffsIndex = 0;
+    }
+    this.store.setNumberOfPlayOffs(
+      this.numberOfPlayOffsOptions[this.selectedNumberOfPlayOffsIndex]
+    );
+  }
+
+  changeRibbonTournamentNumberToLeft() {
+    if (this.selectedRibbonTournamentNumberIndex > 0) {
+      this.selectedRibbonTournamentNumberIndex--;
+    } else {
+      this.selectedRibbonTournamentNumberIndex =
+        this.RibbonTournamentNumberOptions.length - 1;
+    }
+    this.store.setNumberOfRibbonTournament(
+      this.RibbonTournamentNumberOptions[
+        this.selectedRibbonTournamentNumberIndex
+      ]
+    );
+  }
+
+  changeRibbonTournamentNumberToRight() {
+    if (
+      this.selectedRibbonTournamentNumberIndex <
+      this.RibbonTournamentNumberOptions.length - 1
+    ) {
+      this.selectedRibbonTournamentNumberIndex++;
+    } else {
+      this.selectedRibbonTournamentNumberIndex = 0;
+    }
+    this.store.setNumberOfRibbonTournament(
+      this.RibbonTournamentNumberOptions[
+        this.selectedRibbonTournamentNumberIndex
+      ]
+    );
+  }
+
+  changeNumberOfAvailableFieldsToLeft() {
+    if (this.selectedNumberOfAvailableFieldsIndex > 0) {
+      this.selectedNumberOfAvailableFieldsIndex--;
+    } else {
+      this.selectedNumberOfAvailableFieldsIndex =
+        this.numberOfAvailableFieldsOptions.length - 1;
+    }
+    this.store.setNumberOfAvailableFields(
+      this.numberOfAvailableFieldsOptions[
+        this.selectedNumberOfAvailableFieldsIndex
+      ]
+    );
+  }
+
+  changeNumberOfAvailableFieldsToRight() {
+    if (
+      this.selectedNumberOfAvailableFieldsIndex <
+      this.numberOfAvailableFieldsOptions.length - 1
+    ) {
+      this.selectedNumberOfAvailableFieldsIndex++;
+    } else {
+      this.selectedNumberOfAvailableFieldsIndex = 0;
+    }
+    this.store.setNumberOfAvailableFields(
+      this.numberOfAvailableFieldsOptions[
+        this.selectedNumberOfAvailableFieldsIndex
+      ]
+    );
   }
 }

@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{ 'tournament.rounds.results' | translate }}</h2>
+<form [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>
+        @for (team of teams1(); track team.id) {
+          {{ team.name }}
+        }
+      </mat-label>
+      <input matInput formControlName="team1Score" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        @for (team of teams2(); track team.id) {
+          {{ team.name }}
+        }
+      </mat-label>
+      <input matInput formControlName="team2Score" />
+    </mat-form-field>
+  </mat-dialog-content>
+</form>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">
+    {{ 'global.cancel' | translate }}
+  </button>
+  <button mat-button [disabled]="form.invalid" (click)="save()" cdkFocusInitial>
+    {{ 'global.confirm' | translate }}
+  </button>
+</mat-dialog-actions>

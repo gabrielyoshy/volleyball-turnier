@@ -6,7 +6,55 @@
 </header>
 
 <ul>
-  <li class="tournament">
+  <li class="list">
+    <button mat-icon-button (click)="changeNumberOfAvailableFieldsToLeft()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <p>
+      {{
+        'tournament.general.availableFields'
+          | translate: { availableFields: store.numberOfAvailableFields() }
+      }}
+    </p>
+    <button
+      class="right"
+      mat-icon-button
+      (click)="changeNumberOfAvailableFieldsToRight()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </li>
+
+  <li class="wiht-details">
+    <button mat-icon-button (click)="changeRibbonTournamentNumberToLeft()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <p>
+      {{ 'tournament.general.ribbonTournament' | translate }}
+      {{
+        store.ribbonTournamentNumber() > 1
+          ? ('global.yes' | translate)
+          : ('global.no' | translate)
+      }}
+    </p>
+    <button
+      class="right"
+      mat-icon-button
+      (click)="changeRibbonTournamentNumberToRight()">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+
+    <span>
+      {{
+        'tournament.general.groupsInTeam'
+          | translate
+            : {
+                groupsInTeam: store.ribbonTournamentNumber()
+              }
+      }}
+    </span>
+  </li>
+
+  <li class="list">
     <button mat-icon-button (click)="changeTypeToLeft()">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
@@ -18,27 +66,52 @@
     </button>
   </li>
 
-  <li class="rounds">
-    <button mat-icon-button (click)="removeRound()">
-      <mat-icon>remove</mat-icon>
-    </button>
-    <p>
-      {{ 'tournament.general.numberOfRounds' | translate }}
-      {{ store.rounds().length }}
-    </p>
-    <button class="right" mat-icon-button (click)="addRound()">
-      <mat-icon>add</mat-icon>
-    </button>
+  @if (store.type() === 'combined' || store.type() === 'playoffs') {
+    <li class="list">
+      <button mat-icon-button (click)="changePlayOffRoundsToLeft()">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+      <p>
+        {{
+          'tournament.general.playOffsNumber'
+            | translate: { playOffsNumber: store.numberOffPlayOffs() }
+        }}
+      </p>
+      <button
+        class="right"
+        mat-icon-button
+        (click)="changePlayOffRoundsToRight()">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+    </li>
+  }
 
-    <span>{{
-      'tournament.general.numberOfTeams'
-        | translate: { numberOfTeams: store.numberOfTeams() }
-    }}</span>
-    <span>
-      {{
-        'tournament.general.recommendedNumberOfRounds'
-          | translate: { recommendedNumberOfRounds: recomendedNumberOfRounds() }
-      }}
-    </span>
-  </li>
+  @if (store.type() === 'combined' || store.type() === 'swiss') {
+    <li class="wiht-details">
+      <button mat-icon-button (click)="removeRound()">
+        <mat-icon>remove</mat-icon>
+      </button>
+      <p>
+        {{
+          'tournament.general.numberOfRounds'
+            | translate: { numberOfRounds: store.rounds().length }
+        }}
+      </p>
+      <button class="right" mat-icon-button (click)="addRound()">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <span>{{
+        'tournament.general.numberOfTeams'
+          | translate: { numberOfTeams: store.numberOfTeams() }
+      }}</span>
+      <span>
+        {{
+          'tournament.general.recommendedNumberOfRounds'
+            | translate
+              : { recommendedNumberOfRounds: recomendedNumberOfRounds() }
+        }}
+      </span>
+    </li>
+  }
 </ul>

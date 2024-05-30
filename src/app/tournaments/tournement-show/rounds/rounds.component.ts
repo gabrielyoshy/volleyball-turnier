@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { Match, RoundStatus, TournamentType } from '../../interfaces';
+import { MatDialog } from '@angular/material/dialog';
+import { EditResultComponent } from './edit-result/edit-result.component';
 
 @Component({
   selector: 'app-rounds',
@@ -14,6 +16,7 @@ import { Match, RoundStatus, TournamentType } from '../../interfaces';
 })
 export class RoundsComponent {
   store = inject(Store);
+  dialog = inject(MatDialog);
   selectedRoundIndex = signal(0);
   selectedRound = computed(() => {
     const rounds = this.store.rounds();
@@ -24,9 +27,10 @@ export class RoundsComponent {
       return {
         ...rounds[selectedRoundIndex],
         matches: rounds[selectedRoundIndex].matches.map(match => {
-          const team1 = teams.find(team => team.id === match.team1Id);
-          const team2 = teams.find(team => team.id === match.team2Id);
-          return { ...match, team1, team2 };
+          const teams1 = teams.filter(team => match.team1Ids.includes(team.id));
+          const teams2 = teams.filter(team => match.team2Ids.includes(team.id));
+
+          return { ...match, teams1, teams2 };
         }),
       };
     }
@@ -58,38 +62,48 @@ export class RoundsComponent {
     }
 
     if (this.store.type() === TournamentType.Swiss) {
+      //sort first Points, then games, then goals
       const sortedTeams = this.store
         .teams()
-        .sort((a, b) => b.points - a.points);
+        .sort((a, b) => b.points - a.points)
+        .sort((a, b) => b.gamesWon - a.gamesWon)
+        .sort((a, b) => b.goalsFor - a.goalsFor);
 
+      const availableFields = this.store.numberOfAvailableFields();
       const matches: Match[] = [];
+      const numberOfTeamsInMatch = this.store.ribbonTournamentNumber();
 
-      for (let i = 0; i < sortedTeams.length; i += 2) {
-        if (i + 1 >= sortedTeams.length) {
-          matches.push({
-            id: `${sortedTeams[i].id}-bye`,
-            team1Id: sortedTeams[i].id,
-            team2Id: 'bye',
-            score1: 1,
-            score2: 0,
-            winnerId: sortedTeams[i].id,
-            loserId: 'bye',
-          });
-        } else {
-          matches.push({
-            id: `${sortedTeams[i].id}-${sortedTeams[i + 1].id}`,
-            team1Id: sortedTeams[i].id,
-            team2Id: sortedTeams[i + 1].id,
-            score1: 0,
-            score2: 0,
-            winnerId: 'not-played',
-            loserId: 'not-played',
-          });
+      for (let i = 0; i < sortedTeams.length; i += numberOfTeamsInMatch * 2) {
+        const team1Ids = [];
+        const team2Ids = [];
+        for (let j = 0; j < numberOfTeamsInMatch; j++) {
+          if (i + j < sortedTeams.length) {
+            team1Ids.push(sortedTeams[i + j].id);
+          }
+          if (i + j + numberOfTeamsInMatch < sortedTeams.length) {
+            team2Ids.push(sortedTeams[i + j + numberOfTeamsInMatch].id);
+          }
         }
+        matches.push({
+          id: Math.random().toString(),
+          feldNumber: matches.length % availableFields,
+          team1Ids,
+          team2Ids,
+          score1: 0,
+          score2: 0,
+          winnerIds: [],
+          loserIds: [],
+        });
       }
 
       const roundId = round.id;
       this.store.startRound(roundId, matches);
     }
+  }
+
+  changeResult(match: Match) {
+    this.dialog.open(EditResultComponent, {
+      data: match,
+    });
   }
 }

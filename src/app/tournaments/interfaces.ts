@@ -15,6 +15,9 @@ export interface Tournament {
   teams: Team[];
   type: TournamentType;
   rounds: Round[];
+  numberOffPlayOffs: number;
+  ribbonTournamentNumber: number;
+  numberOfAvailableFields: number;
 }
 
 export enum RoundStatus {
@@ -32,19 +35,26 @@ export interface Round {
 
 export interface Match {
   id: string;
-  team1Id: string;
-  team2Id: string;
+  feldNumber: number;
+  team1Ids: string[];
+  team2Ids: string[];
   score1: number;
   score2: number;
-  winnerId: string;
-  loserId: string;
+  winnerIds: string[];
+  loserIds: string[];
 }
 
 export interface Team {
   id: string;
   name: string;
-  points: number;
   players: Player[];
+  points: number;
+  gamesPlayed: number;
+  gamesWon: number;
+  gamesLost: number;
+  gamesDrawn: number;
+  goalsFor: number;
+  goalsAgainst: number;
 }
 
 export interface Player {

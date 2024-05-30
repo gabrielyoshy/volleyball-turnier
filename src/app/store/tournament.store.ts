@@ -33,6 +33,9 @@ const initialState: Tournament = {
   teams: [],
   type: TournamentType.Swiss,
   rounds: [],
+  numberOffPlayOffs: 0,
+  ribbonTournamentNumber: 1,
+  numberOfAvailableFields: 1,
 };
 
 export const Store = signalStore(
@@ -63,6 +66,12 @@ export const Store = signalStore(
         name: teamName,
         players: [],
         points: 0,
+        gamesPlayed: 0,
+        gamesWon: 0,
+        gamesLost: 0,
+        gamesDrawn: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
       };
       await updateDoc(tournamentDocRef, {
         teams: arrayUnion(newTeam),
@@ -139,6 +148,112 @@ export const Store = signalStore(
       });
       patchState(store, {
         type,
+      });
+    },
+
+    setNumberOfPlayOffs: async (numberOffPlayOffs: number) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      await updateDoc(tournamentDocRef, {
+        numberOffPlayOffs,
+      });
+      patchState(store, {
+        numberOffPlayOffs,
+      });
+    },
+
+    setNumberOfRibbonTournament: async (ribbonTournamentNumber: number) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      await updateDoc(tournamentDocRef, {
+        ribbonTournamentNumber,
+      });
+      patchState(store, {
+        ribbonTournamentNumber,
+      });
+    },
+
+    setNumberOfAvailableFields: async (numberOfAvailableFields: number) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      await updateDoc(tournamentDocRef, {
+        numberOfAvailableFields,
+      });
+      patchState(store, {
+        numberOfAvailableFields,
+      });
+    },
+
+    changeMatchResult: async (match: Match, score1: number, score2: number) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const rounds = store.rounds().map(round => {
+        const matches = round.matches.map(m => {
+          if (m.id === match.id) {
+            if (score1 === score2) {
+              return {
+                ...m,
+                score1,
+                score2,
+                winnerIds: ['draw'],
+                loserIds: ['draw'],
+              };
+            }
+
+            return {
+              ...m,
+              score1,
+              score2,
+              winnerIds: score1 > score2 ? m.team1Ids : m.team2Ids,
+              loserIds: score1 > score2 ? m.team2Ids : m.team1Ids,
+            };
+          }
+          return m;
+        });
+        return {
+          ...round,
+          matches,
+        };
+      });
+      await updateDoc(tournamentDocRef, {
+        rounds,
+      });
+
+      console.log('rounds', rounds);
+
+      const teams = store.teams().map(team => {
+        const matches = store
+          .rounds()
+          .flatMap(r => r.matches)
+          .filter(
+            m => m.team1Ids.includes(team.id) || m.team2Ids.includes(team.id)
+          );
+        const gamesPlayed = matches.length;
+        const gamesWon = matches.filter(m =>
+          m.winnerIds.includes(team.id)
+        ).length;
+        const gamesLost = matches.filter(m =>
+          m.loserIds.includes(team.id)
+        ).length;
+        const gamesDrawn = matches.filter(m =>
+          m.winnerIds.includes('draw')
+        ).length;
+        const goalsFor = matches
+          .filter(m => m.team1Ids.includes(team.id))
+          .reduce((acc, m) => acc + m.score1, 0);
+        const goalsAgainst = matches
+          .filter(m => m.team1Ids.includes(team.id))
+          .reduce((acc, m) => acc + m.score2, 0);
+        return {
+          ...team,
+          gamesPlayed,
+          gamesWon,
+          gamesLost,
+          gamesDrawn,
+          goalsFor,
+          goalsAgainst,
+        };
+      });
+
+      await updateDoc(tournamentDocRef, {
+        teams,
+        rounds,
       });
     },
   }))

@@ -37,13 +37,13 @@ li {
   }
 }
 
-.tournament {
+.list {
   display: flex;
   justify-content: space-between;
   padding: 25px 0;
 }
 
-.rounds {
+.wiht-details {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding: 20px 0 0;

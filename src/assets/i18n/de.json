@@ -18,7 +18,11 @@
       },
       "numberOfTeams": "Anzahl der Teams: {{numberOfTeams}}",
       "recommendedNumberOfRounds": "Empfohlene Anzahl Runden: {{recommendedNumberOfRounds}}",
-      "numberOfRounds": "Anzahl Runden:"
+      "numberOfRounds": "Playoff Runden: {{numberOfRounds}}",
+      "playOffsNumber": "Anzahl der Playoff: {{playOffsNumber}}",
+      "availableFields": "Verfügbare Felder: {{availableFields}}",
+      "ribbonTournament": "SchleifchenTurnier: ",
+      "groupsInTeam": "Gruppen in Team: {{groupsInTeam}}"
     },
     "teams": {
       "title": "Teams",
@@ -26,7 +30,19 @@
       "name": "Name"
     },
     "rounds": {
-      "round": "Runde"
+      "round": "Runde",
+      "results": "Ergebnisse"
+    },
+    "positions": {
+      "title": "Platzierungen",
+      "team": "Manschaft",
+      "games": "SP",
+      "wins": "S",
+      "losses": "N",
+      "draws": "U",
+      "points": "P",
+      "goals": "T",
+      "goalDifference": "TD"
     }
   },
   "global": {

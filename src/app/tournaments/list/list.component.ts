@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { Tournament } from '../interfaces';
+import { Store } from '../../store/tournament.store';
 
 @Component({
   selector: 'app-list',
@@ -25,16 +26,13 @@ export class ListComponent {
   router = inject(Router);
   firestore: Firestore = inject(Firestore);
   tournaments$: Observable<Tournament[]>;
+  store = inject(Store);
 
   constructor() {
     const aCollection = collection(this.firestore, 'tournaments');
     this.tournaments$ = collectionData(aCollection, {
       idField: 'id',
     }) as Observable<Tournament[]>;
-
-    this.tournaments$.subscribe(tournaments => {
-      console.log(tournaments);
-    });
   }
 
   createNewTournament() {

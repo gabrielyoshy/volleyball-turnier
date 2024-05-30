@@ -1,22 +1,50 @@
 @if (selectedRound()) {
   <header>
+    <button
+      mat-icon-button
+      (click)="changeRoundToLeft()"
+      [disabled]="selectedRound()?.number === 1">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
     <h2>
       {{ 'tournament.rounds.round' | translate }}
       {{ selectedRound()?.number }}
     </h2>
-    <button (click)="startRound()" class="primary" mat-flat-button>
-      start
+    <button
+      class="right"
+      mat-icon-button
+      (click)="changeRoundToRight()"
+      [disabled]="selectedRound()?.number === store.rounds().length">
+      <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
   </header>
-
-  <ul>
-    @for (match of selectedRound()?.matches; track match.id) {
-      <li>
-        <span>{{ match.team1?.name }}</span>
-        <span> - </span>
-        <span>{{ match.team2?.name }}</span>
-        <span> - </span>
-      </li>
+  <main>
+    @if (selectedRound()?.status === 'not-started') {
+      <button (click)="startRound()" class="primary" mat-flat-button>
+        start
+      </button>
     }
-  </ul>
+
+    <ul>
+      @for (match of selectedRound()?.matches; track match.id) {
+        <li>
+          <div class="team">
+            @for (team of match.teams1; track team.id) {
+              <span>{{ team.name }}</span>
+            }
+          </div>
+          <div class="score" (click)="changeResult(match)">
+            <span>{{ match.score1 }}</span>
+            <span>:</span>
+            <span>{{ match.score2 }}</span>
+          </div>
+          <div class="team">
+            @for (team of match.teams2; track team.id) {
+              <span>{{ team.name }}</span>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  </main>
 }

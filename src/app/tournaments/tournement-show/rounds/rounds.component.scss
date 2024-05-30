@@ -9,16 +9,34 @@ h2 {
   margin: 0;
 }
 
+main {
+  padding-top: 10px;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 li {
-  border-bottom: 1px solid var(--border-color);
+  border: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+}
+
+.score {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: var(--primary-color);
+  color: var(--primary-color-contrast);
+  width: 100%;
+  justify-content: center;
+}
+
+.team {
+  width: 80px;
+  text-align: center;
+  place-self: center;
 }

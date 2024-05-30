@@ -1,1 +1,33 @@
-<p>positions works!</p>
+<header>
+  <h2>{{ 'tournament.positions.title' | translate }}</h2>
+</header>
+
+<ul>
+  <li class="header">
+    <div class="name">{{ 'tournament.positions.team' | translate }}</div>
+    <span>{{ 'tournament.positions.games' | translate }}</span>
+    <span>{{ 'tournament.positions.wins' | translate }}</span>
+    <span>{{ 'tournament.positions.losses' | translate }}</span>
+    <span>{{ 'tournament.positions.draws' | translate }}</span>
+    <span class="highlight">
+      {{ 'tournament.positions.points' | translate }}
+    </span>
+    <span>{{ 'tournament.positions.goals' | translate }}</span>
+    <span>{{ 'tournament.positions.goalDifference' | translate }}</span>
+  </li>
+  @for (team of teamsSortedByPoints(); track team.id; let i = $index) {
+    <li>
+      <div class="name">
+        <span>{{ i + 1 }}</span>
+        <span>{{ team.name }}</span>
+      </div>
+      <span>{{ team.gamesPlayed }}</span>
+      <span>{{ team.gamesWon }}</span>
+      <span>{{ team.gamesLost }}</span>
+      <span>{{ team.gamesDrawn }}</span>
+      <span class="highlight">{{ team.points }}</span>
+      <span>{{ team.goalsFor }}</span>
+      <span>{{ team.goalsAgainst }}</span>
+    </li>
+  }
+</ul>

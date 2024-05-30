@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   Firestore,
   doc,
@@ -6,6 +6,7 @@ import {
   getDoc,
   collection,
   getDocs,
+  collectionData,
 } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -19,6 +20,7 @@ import { RoundsComponent } from './rounds/rounds.component';
 import { TeamsComponent } from './teams/teams.component';
 import { Team, Tournament } from '../interfaces';
 import { LoadingComponent } from '../../share/loading/loading.component';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tournement-show',
@@ -36,27 +38,37 @@ import { LoadingComponent } from '../../share/loading/loading.component';
   templateUrl: './tournement-show.component.html',
   styleUrl: './tournement-show.component.scss',
 })
-export class TournementShowComponent {
+export class TournementShowComponent implements OnInit, OnDestroy {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   firestore: Firestore = inject(Firestore);
   store = inject(Store);
-
-  loading = true;
+  storeSub = new Subscription();
 
   async ngOnInit() {
     const tournamentId = this.activatedRoute.snapshot.paramMap.get('id');
     if (!tournamentId) {
-      this.loading = false;
       throw new Error('No tournament selected');
     }
 
-    const docRef = doc(this.firestore, 'tournaments', tournamentId);
-    const tournament = (await getDoc(docRef)).data() as Tournament | undefined;
+    const aCollection = collection(this.firestore, 'tournaments');
+    const tournaments$ = collectionData(aCollection, {
+      idField: 'id',
+    }) as Observable<Tournament[]>;
 
-    if (tournament) {
-      this.store.selectTournament({ ...tournament, id: tournamentId });
-      this.loading = false;
-    }
+    this.storeSub.add(
+      tournaments$.subscribe(tournaments => {
+        if (tournamentId) {
+          const tournament = tournaments.find(t => t.id === tournamentId);
+          if (tournament) {
+            this.store.selectTournament(tournament);
+          }
+        }
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.storeSub.unsubscribe();
   }
 }
