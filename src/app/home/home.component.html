@@ -1,1 +1,14 @@
-<span>home</span>
+<main>
+  <h2>{{ 'home.scanCode' | translate }}</h2>
+  <div class="qrcode-container">
+    <qrcode
+      [qrdata]="
+        'https://volleyball-turnier-5199c.firebaseapp.com/tournaments/list'
+      "
+      [allowEmptyString]="true"
+      [width]="200"
+      [errorCorrectionLevel]="'M'"
+      [margin]="0">
+    </qrcode>
+  </div>
+</main>

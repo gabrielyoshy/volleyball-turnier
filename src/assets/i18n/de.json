@@ -1,5 +1,8 @@
 {
   "title": "TurnierMeister Bornheim",
+  "home": {
+    "scanCode": "QR Code scannen um die App zu öffnen"
+  },
   "menu": {
     "home": "Startseite",
     "tournaments": "Turniere",
