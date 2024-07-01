@@ -2,7 +2,8 @@
   "title": "TurnierMeister Bornheim",
   "menu": {
     "home": "Startseite",
-    "tournaments": "Turniere"
+    "tournaments": "Turniere",
+    "login": "Anmelden"
   },
   "tournament": {
     "title": "Turnier",

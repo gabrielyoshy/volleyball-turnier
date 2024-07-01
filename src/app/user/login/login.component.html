@@ -1,0 +1,19 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label>{{ 'login.email' | translate }}</mat-label>
+    <input matInput formControlName="email" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'login.password' | translate }}</mat-label>
+    <input matInput formControlName="password" type="password" />
+  </mat-form-field>
+
+  <button mat-button (click)="login()">
+    {{ 'login' | translate }}
+  </button>
+</form>
+
+<footer>
+  <label>{{ 'user: test@gmail.com' }}</label>
+  <label> password: AdminAdmin</label>
+</footer>
