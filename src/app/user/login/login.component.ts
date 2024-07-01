@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from '../../services/auth.service';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
