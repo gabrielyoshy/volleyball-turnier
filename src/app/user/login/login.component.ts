@@ -13,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Firestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +31,7 @@ import { Firestore } from '@angular/fire/firestore';
 export class LoginComponent {
   firestore: Firestore = inject(Firestore);
   auth = getAuth();
+  router = inject(Router);
 
   formBuilder = new FormBuilder().nonNullable;
 
@@ -46,7 +48,7 @@ export class LoginComponent {
     )
       .then(userCredential => {
         const user = userCredential.user;
-        console.log(user);
+        this.router.navigate(['/tournaments']);
       })
       .catch(error => {
         const errorCode = error.code;

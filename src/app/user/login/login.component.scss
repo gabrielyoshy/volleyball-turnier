@@ -1,0 +1,21 @@
+:host {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 1fr min-content;
+}
+
+form {
+  padding: 50px 10px 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+}

@@ -23,13 +23,19 @@
         routerLinkActive="active">
         {{ 'menu.tournaments' | translate }}
       </a>
-      <a
-        (click)="drawer.toggle()"
-        mat-list-item
-        routerLink="/login"
-        routerLinkActive="active">
-        {{ 'menu.login' | translate }}
-      </a>
+      @if (auth.currentUser) {
+        <a (click)="logout()" mat-list-item>
+          {{ 'menu.logout' | translate }}
+        </a>
+      } @else {
+        <a
+          (click)="drawer.toggle()"
+          mat-list-item
+          routerLink="/login"
+          routerLinkActive="active">
+          {{ 'menu.login' | translate }}
+        </a>
+      }
     </mat-nav-list>
   </mat-drawer>
   <main>
