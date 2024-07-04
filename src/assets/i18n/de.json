@@ -3,10 +3,16 @@
   "home": {
     "scanCode": "QR Code scannen um die App zu öffnen"
   },
+  "login": {
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmButton": "Anmelden"
+  },
   "menu": {
     "home": "Startseite",
     "tournaments": "Turniere",
-    "login": "Anmelden"
+    "login": "Anmelden",
+    "logout": "Abmelden"
   },
   "tournament": {
     "title": "Turnier",
@@ -35,7 +41,12 @@
     },
     "rounds": {
       "round": "Runde",
-      "results": "Ergebnisse"
+      "results": "Ergebnisse",
+      "startTime": "Start um: ",
+      "pause": "Pause",
+      "duration": "Dauer",
+      "changeTimes": "Zeiten ändern",
+      "fieldNumber": "Feldnummer"
     },
     "positions": {
       "title": "Platzierungen",

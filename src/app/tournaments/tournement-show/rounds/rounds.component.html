@@ -19,6 +19,20 @@
     </button>
   </header>
   <main>
+    <div class="time" (click)="changeTimes()">
+      <span>
+        {{ 'tournament.rounds.startTime' | translate }}
+        {{ selectedRound()?.start | date: 'HH:mm' }}</span
+      >
+      <span>
+        {{ 'tournament.rounds.pause' | translate }}
+        {{ selectedRound()?.pause | date: 'HH:mm' }}</span
+      >
+      <span>
+        {{ 'tournament.rounds.duration' | translate }}
+        {{ selectedRound()?.duration | date: 'HH:mm' }}</span
+      >
+    </div>
     @if (selectedRound()?.status === 'not-started') {
       <button (click)="startRound()" class="primary" mat-flat-button>
         start
@@ -28,6 +42,16 @@
     <ul>
       @for (match of selectedRound()?.matches; track match.id) {
         <li>
+          <div class="info">
+            <span>
+              {{ 'tournament.rounds.startTime' | translate }}
+              {{ match.start | date: 'HH:mm' }}
+            </span>
+            <span>
+              {{ 'tournament.rounds.fieldNumber' | translate }}
+              {{ match.fieldNumber }}
+            </span>
+          </div>
           <div class="team">
             @for (team of match.teams1; track team.id) {
               <span>{{ team.name }}</span>

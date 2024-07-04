@@ -5,17 +5,22 @@
   </button>
   <ul>
     @for (tournament of tournaments$ | async; track tournament.id) {
-      <li (click)="showTournament(tournament)">
+      <li>
         <figure></figure>
-        <div class="description">
+        <div class="description" (click)="showTournament(tournament)">
           <h4 class="name">{{ tournament.name }}</h4>
           <span>{{ tournament.startDate | date: 'dd.MM.YY' }}</span>
           <span>{{ tournament.location }}</span>
         </div>
-        <mat-icon>schedule</mat-icon>
-        <span>
+        <mat-icon (click)="showTournament(tournament)">schedule</mat-icon>
+        <span (click)="showTournament(tournament)">
           {{ tournament.startTime }}
         </span>
+        @if (auth.currentUser) {
+          <button (click)="deleteTournament(tournament)" class="delete-button">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
       </li>
     }
   </ul>

@@ -1,13 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import {
-  Firestore,
-  doc,
-  deleteDoc,
-  getDoc,
-  collection,
-  getDocs,
-  collectionData,
-} from '@angular/fire/firestore';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +10,7 @@ import { GeneralDataComponent } from './general-data/general-data.component';
 import { PositionsComponent } from './positions/positions.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { TeamsComponent } from './teams/teams.component';
-import { Team, Tournament } from '../interfaces';
+import { Tournament } from '../interfaces';
 import { LoadingComponent } from '../../share/loading/loading.component';
 import { Observable, Subscription } from 'rxjs';
 

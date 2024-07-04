@@ -15,7 +15,7 @@
     <span>{{ 'tournament.positions.goals' | translate }}</span>
     <span>{{ 'tournament.positions.goalDifference' | translate }}</span>
   </li>
-  @for (team of teamsSortedByPoints(); track team.id; let i = $index) {
+  @for (team of store.teamsSortedByPoints(); track team.id; let i = $index) {
     <li>
       <div class="name">
         <span>{{ i + 1 }}</span>

@@ -15,8 +15,4 @@ import { TranslateModule } from '@ngx-translate/core';
 export class PositionsComponent {
   store = inject(Store);
   dialog = inject(MatDialog);
-
-  teamsSortedByPoints = computed(() =>
-    this.store.teams().sort((a, b) => b.points - a.points)
-  );
 }

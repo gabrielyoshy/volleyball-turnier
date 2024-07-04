@@ -43,7 +43,7 @@ export class EditResultComponent {
   });
 
   form = this.formBuilder.group({
-    team1Score: [5, [Validators.required, Validators.min(0)]],
+    team1Score: [0, [Validators.required, Validators.min(0)]],
     team2Score: [0, [Validators.required, Validators.min(0)]],
   });
 

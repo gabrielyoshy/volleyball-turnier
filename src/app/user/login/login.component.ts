@@ -1,11 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  ReactiveFormsModule,
-  FormBuilder,
-} from '@angular/forms';
+import { Validators, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -46,7 +40,6 @@ export class LoginComponent {
       this.form.controls.password.value
     )
       .then(userCredential => {
-        const user = userCredential.user;
         this.router.navigate(['/tournaments']);
       })
       .catch(error => {

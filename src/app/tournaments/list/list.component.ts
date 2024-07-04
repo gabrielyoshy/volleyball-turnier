@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { Tournament } from '../interfaces';
 import { Store } from '../../store/tournament.store';
+import { getAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-list',
@@ -27,6 +28,7 @@ export class ListComponent {
   firestore: Firestore = inject(Firestore);
   tournaments$: Observable<Tournament[]>;
   store = inject(Store);
+  auth = getAuth();
 
   constructor() {
     const aCollection = collection(this.firestore, 'tournaments');
@@ -42,5 +44,10 @@ export class ListComponent {
   showTournament(tournament: Tournament) {
     //navigate to the show page with parameter
     this.router.navigate(['tournaments', 'show', tournament.id]);
+  }
+
+  deleteTournament(tournament: Tournament) {
+    console.log('delete tournament', tournament);
+    this.store.deleteTournament(tournament.id);
   }
 }

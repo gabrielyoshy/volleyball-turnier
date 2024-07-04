@@ -29,13 +29,17 @@ export enum RoundStatus {
 export interface Round {
   id: string;
   number: number;
+  start: string;
+  pause: string;
+  duration: string;
   matches: Match[];
   status: RoundStatus;
 }
 
 export interface Match {
   id: string;
-  feldNumber: number;
+  start: string;
+  fieldNumber: number;
   team1Ids: string[];
   team2Ids: string[];
   score1: number;

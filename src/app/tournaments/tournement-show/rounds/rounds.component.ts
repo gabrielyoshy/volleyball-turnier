@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Store } from '../../../store/tournament.store';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,11 +6,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Match, RoundStatus, TournamentType } from '../../interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { EditResultComponent } from './edit-result/edit-result.component';
+import { CommonModule } from '@angular/common';
+import { getAuth } from '@angular/fire/auth';
+import { EditTimesComponent } from './edit-times/edit-result.component';
 
 @Component({
   selector: 'app-rounds',
   standalone: true,
-  imports: [TranslateModule, MatButtonModule, MatIconModule],
+  imports: [TranslateModule, MatButtonModule, MatIconModule, CommonModule],
   templateUrl: './rounds.component.html',
   styleUrl: './rounds.component.scss',
 })
@@ -18,6 +21,7 @@ export class RoundsComponent {
   store = inject(Store);
   dialog = inject(MatDialog);
   selectedRoundIndex = signal(0);
+  auth = getAuth();
   selectedRound = computed(() => {
     const rounds = this.store.rounds();
     const selectedRoundIndex = this.selectedRoundIndex();
@@ -63,19 +67,20 @@ export class RoundsComponent {
 
     if (this.store.type() === TournamentType.Swiss) {
       //sort first Points, then games, then goals
-      const sortedTeams = this.store
-        .teams()
-        .sort((a, b) => b.points - a.points)
-        .sort((a, b) => b.gamesWon - a.gamesWon)
-        .sort((a, b) => b.goalsFor - a.goalsFor);
+      const sortedTeams = this.store.teamsSortedByPoints();
 
       const availableFields = this.store.numberOfAvailableFields();
       const matches: Match[] = [];
       const numberOfTeamsInMatch = this.store.ribbonTournamentNumber();
+      const durationInMinutes = new Date(Number(round.duration)).getMinutes();
+      const pauseInMinutes = new Date(Number(round.pause)).getMinutes();
+      let startTime = new Date(Number(round.start));
 
       for (let i = 0; i < sortedTeams.length; i += numberOfTeamsInMatch * 2) {
         const team1Ids = [];
         const team2Ids = [];
+        const fieldNumber = (matches.length % availableFields) + 1;
+
         for (let j = 0; j < numberOfTeamsInMatch; j++) {
           if (i + j < sortedTeams.length) {
             team1Ids.push(sortedTeams[i + j].id);
@@ -86,7 +91,8 @@ export class RoundsComponent {
         }
         matches.push({
           id: Math.random().toString(),
-          feldNumber: matches.length % availableFields,
+          fieldNumber: fieldNumber,
+          start: startTime.toString(),
           team1Ids,
           team2Ids,
           score1: 0,
@@ -94,6 +100,14 @@ export class RoundsComponent {
           winnerIds: [],
           loserIds: [],
         });
+
+        if (fieldNumber === availableFields) {
+          startTime = new Date(
+            startTime.getTime() +
+              durationInMinutes * 60000 +
+              pauseInMinutes * 60000
+          );
+        }
       }
 
       const roundId = round.id;
@@ -104,6 +118,17 @@ export class RoundsComponent {
   changeResult(match: Match) {
     this.dialog.open(EditResultComponent, {
       data: match,
+    });
+  }
+
+  changeTimes() {
+    const round = this.selectedRound();
+    if (!round || !this.auth.currentUser) {
+      return;
+    }
+
+    this.dialog.open(EditTimesComponent, {
+      data: round,
     });
   }
 }

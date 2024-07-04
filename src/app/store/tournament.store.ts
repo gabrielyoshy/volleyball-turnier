@@ -44,19 +44,25 @@ export const Store = signalStore(
   withComputed(({ teams, rounds }) => ({
     numberOfTeams: computed(() => teams().length),
     numberOfRounds: computed(() => rounds().length),
+    teamsSortedByPoints: computed(() =>
+      teams().sort((a, b) => {
+        if (b.points !== a.points) {
+          return b.points - a.points;
+        }
+        if (b.gamesWon !== a.gamesWon) {
+          return b.gamesWon - a.gamesWon;
+        }
+        return b.goalsFor - a.goalsFor;
+      })
+    ),
   })),
   withMethods((store, firestore = inject(Firestore)) => ({
     selectTournament: (tournament: Tournament) => {
       patchState(store, tournament);
     },
 
-    deleteTournament: async () => {
-      const tournamentId = store.id();
-      if (!tournamentId) {
-        return;
-      }
+    deleteTournament: async (tournamentId: string) => {
       await deleteDoc(doc(firestore, 'tournaments', tournamentId));
-      inject(Router).navigate(['tournaments', 'list']);
     },
 
     addNewTeam: async (teamName: string) => {
@@ -95,9 +101,13 @@ export const Store = signalStore(
 
     addNewRound: async () => {
       const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+
       const round = {
         id: Math.random().toString(36).substring(2, 15),
         number: store.rounds().length + 1,
+        start: new Date().getMilliseconds().toString(),
+        pause: new Date().setHours(0, 5, 0, 0).toString(),
+        duration: new Date().setHours(0, 20, 0, 0).toString(),
         matches: [],
         status: RoundStatus.NotStarted,
       };
@@ -113,6 +123,32 @@ export const Store = signalStore(
     deletelastRound: async () => {
       const tournamentDocRef = doc(firestore, 'tournaments', store.id());
       const rounds = store.rounds().slice(0, -1);
+      await updateDoc(tournamentDocRef, {
+        rounds,
+      });
+      patchState(store, {
+        rounds,
+      });
+    },
+
+    updateTime: async (
+      roundId: string,
+      start: string,
+      pause: string,
+      duration: string
+    ) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const rounds = store.rounds().map(round => {
+        if (round.id === roundId) {
+          return {
+            ...round,
+            start,
+            pause,
+            duration,
+          };
+        }
+        return round;
+      });
       await updateDoc(tournamentDocRef, {
         rounds,
       });
@@ -215,8 +251,6 @@ export const Store = signalStore(
         rounds,
       });
 
-      console.log('rounds', rounds);
-
       const teams = store.teams().map(team => {
         const matches = store
           .rounds()
@@ -234,6 +268,7 @@ export const Store = signalStore(
         const gamesDrawn = matches.filter(m =>
           m.winnerIds.includes('draw')
         ).length;
+        const points = gamesWon * 3 + gamesDrawn;
         const goalsFor = matches
           .filter(m => m.team1Ids.includes(team.id))
           .reduce((acc, m) => acc + m.score1, 0);
@@ -246,6 +281,7 @@ export const Store = signalStore(
           gamesWon,
           gamesLost,
           gamesDrawn,
+          points,
           goalsFor,
           goalsAgainst,
         };

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '../../../store/tournament.store';
 import { TournamentType } from '../../interfaces';
+import { getAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-general-data',
@@ -18,6 +19,7 @@ export class GeneralDataComponent {
   store = inject(Store);
   router = inject(Router);
   firestore: Firestore = inject(Firestore);
+  auth = getAuth();
 
   tournamentTypes = Object.values(TournamentType);
   selectedTypeIndex = 0;
@@ -31,10 +33,6 @@ export class GeneralDataComponent {
   recomendedNumberOfRounds = computed(() =>
     Math.ceil(Math.log2(this.store.numberOfTeams()))
   );
-
-  deleteTournament() {
-    this.store.deleteTournament();
-  }
 
   changeTypeToLeft() {
     if (this.selectedTypeIndex > 0) {

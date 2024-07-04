@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ 'tournament.rounds.changeTimes' | translate }}</h2>
+<form [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>
+        {{ 'tournament.rounds.startTime' | translate }}
+      </mat-label>
+      <input matInput type="time" formControlName="start" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        {{ 'tournament.rounds.pause' | translate }}
+      </mat-label>
+      <input matInput type="time" formControlName="pause" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        {{ 'tournament.rounds.duration' | translate }}
+      </mat-label>
+      <input matInput type="time" formControlName="duration" />
+    </mat-form-field>
+  </mat-dialog-content>
+</form>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">
+    {{ 'global.cancel' | translate }}
+  </button>
+  <button mat-button [disabled]="form.invalid" (click)="save()" cdkFocusInitial>
+    {{ 'global.confirm' | translate }}
+  </button>
+</mat-dialog-actions>
