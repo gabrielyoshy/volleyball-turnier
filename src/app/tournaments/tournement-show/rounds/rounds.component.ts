@@ -131,4 +131,8 @@ export class RoundsComponent {
       data: round,
     });
   }
+
+  print() {
+    window.print();
+  }
 }

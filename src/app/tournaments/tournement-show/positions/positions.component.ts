@@ -15,4 +15,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class PositionsComponent {
   store = inject(Store);
   dialog = inject(MatDialog);
+
+  print() {
+    window.print();
+  }
 }

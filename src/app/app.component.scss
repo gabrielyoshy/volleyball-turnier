@@ -32,3 +32,9 @@ mat-nav-list {
     }
   }
 }
+
+@media print {
+  header {
+    display: none !important;
+  }
+}

@@ -61,3 +61,10 @@ li {
 button {
   width: 100%;
 }
+
+@media print {
+  header,
+  button {
+    display: none !important;
+  }
+}

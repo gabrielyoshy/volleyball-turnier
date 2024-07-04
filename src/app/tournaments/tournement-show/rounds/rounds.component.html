@@ -70,5 +70,11 @@
         </li>
       }
     </ul>
+
+    @if (selectedRound()?.status === 'in-progress') {
+      <button (click)="print()" class="primary" mat-flat-button>
+        {{ 'global.print' | translate }}
+      </button>
+    }
   </main>
 }

@@ -37,3 +37,14 @@ li {
 .highlight {
   font-weight: bold;
 }
+
+button {
+  width: 100%;
+}
+
+@media print {
+  header,
+  button {
+    display: none !important;
+  }
+}

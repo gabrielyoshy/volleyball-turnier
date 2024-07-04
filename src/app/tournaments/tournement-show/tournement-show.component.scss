@@ -12,3 +12,11 @@ mat-tab-group {
     padding: 0 10px 10px;
   }
 }
+
+:host ::ng-deep {
+  @media print {
+    .mat-mdc-tab-label-container {
+      display: none !important;
+    }
+  }
+}
