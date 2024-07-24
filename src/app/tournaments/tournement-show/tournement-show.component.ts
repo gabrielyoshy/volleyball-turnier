@@ -13,6 +13,7 @@ import { TeamsComponent } from './teams/teams.component';
 import { Tournament } from '../interfaces';
 import { LoadingComponent } from '../../share/loading/loading.component';
 import { Observable, Subscription } from 'rxjs';
+import { getAuth } from 'firebase/auth';
 
 @Component({
   selector: 'app-tournement-show',
@@ -36,6 +37,7 @@ export class TournementShowComponent implements OnInit, OnDestroy {
   firestore: Firestore = inject(Firestore);
   store = inject(Store);
   storeSub = new Subscription();
+  auth = getAuth();
 
   async ngOnInit() {
     const tournamentId = this.activatedRoute.snapshot.paramMap.get('id');

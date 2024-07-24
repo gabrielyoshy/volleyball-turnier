@@ -116,6 +116,10 @@ export class RoundsComponent {
   }
 
   changeResult(match: Match) {
+    if (!this.auth.currentUser) {
+      return;
+    }
+
     this.dialog.open(EditResultComponent, {
       data: match,
     });

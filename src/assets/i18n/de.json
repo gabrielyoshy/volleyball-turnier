@@ -19,6 +19,7 @@
     "name": "Name",
     "date": "Datum",
     "location": "Ort",
+    "startTime": "Startzeit",
     "new": "Neues Turnier",
     "general": {
       "types": {

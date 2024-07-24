@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '../../../store/tournament.store';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTeamComponent } from './add-team/add-team.component';
+import { getAuth } from 'firebase/auth';
 
 @Component({
   selector: 'app-teams',
@@ -16,6 +17,7 @@ import { AddTeamComponent } from './add-team/add-team.component';
 export class TeamsComponent {
   store = inject(Store);
   dialog = inject(MatDialog);
+  auth = getAuth();
 
   addNewTeam() {
     this.dialog.open(AddTeamComponent);
