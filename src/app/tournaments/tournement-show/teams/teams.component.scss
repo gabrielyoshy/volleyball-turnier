@@ -23,3 +23,9 @@ li {
   align-items: center;
   height: 25px;
 }
+
+.buttons {
+  .active {
+    color: var(--success-color);
+  }
+}

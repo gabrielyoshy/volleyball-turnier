@@ -33,8 +33,9 @@ export class RoundsComponent {
         matches: rounds[selectedRoundIndex].matches.map(match => {
           const teams1 = teams.filter(team => match.team1Ids.includes(team.id));
           const teams2 = teams.filter(team => match.team2Ids.includes(team.id));
+          const referee = teams.find(team => team.id === match.refereeId);
 
-          return { ...match, teams1, teams2 };
+          return { ...match, teams1, teams2, referee };
         }),
       };
     }
@@ -99,6 +100,7 @@ export class RoundsComponent {
           score2: 0,
           winnerIds: [],
           loserIds: [],
+          refereeId: '',
         });
 
         if (fieldNumber === availableFields) {
@@ -109,6 +111,47 @@ export class RoundsComponent {
           );
         }
       }
+      const teams = this.store.teams();
+
+      matches.forEach(match => {
+        const matchesSameTime = matches.filter(m => m.start === match.start);
+        console.log('matchesSameTime', matchesSameTime);
+
+        const availableReferees = teams
+          .filter(team =>
+            matchesSameTime.every(
+              m =>
+                !m.team1Ids.includes(team.id) && !m.team2Ids.includes(team.id)
+            )
+          )
+          .sort((a, b) => a.numberOfReferees - b.numberOfReferees);
+        console.log('availableReferees', availableReferees);
+
+        match.refereeId = availableReferees[0].id;
+
+        const referee = teams.find(team => team.id === match.refereeId);
+        if (match.refereeId && referee) {
+          referee.numberOfReferees++;
+          this.store.incrementRefereeCount(match.refereeId);
+        }
+
+        console.log('time', match.start);
+
+        console.log(
+          'team1',
+          teams.find(team => team.id === match.team1Ids[0])?.name
+        );
+        console.log(
+          'team2',
+          teams.find(team => team.id === match.team2Ids[0])?.name
+        );
+        console.log(
+          'referee',
+          teams.find(team => team.id === match.refereeId)?.name
+        );
+
+        console.log('availableReferees', availableReferees);
+      });
 
       const roundId = round.id;
       this.store.startRound(roundId, matches);

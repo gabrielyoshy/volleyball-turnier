@@ -42,18 +42,21 @@ export const Store = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withComputed(({ teams, rounds }) => ({
-    numberOfTeams: computed(() => teams().length),
+    activeTeams: computed(() => teams().filter(team => team.present)),
+    numberOfTeams: computed(() => teams().filter(team => team.present).length),
     numberOfRounds: computed(() => rounds().length),
     teamsSortedByPoints: computed(() =>
-      teams().sort((a, b) => {
-        if (b.points !== a.points) {
-          return b.points - a.points;
-        }
-        if (b.gamesWon !== a.gamesWon) {
-          return b.gamesWon - a.gamesWon;
-        }
-        return b.goalsFor - a.goalsFor;
-      })
+      teams()
+        .filter(team => team.present)
+        .sort((a, b) => {
+          if (b.points !== a.points) {
+            return b.points - a.points;
+          }
+          if (b.gamesWon !== a.gamesWon) {
+            return b.gamesWon - a.gamesWon;
+          }
+          return b.goalsFor - a.goalsFor;
+        })
     ),
   })),
   withMethods((store, firestore = inject(Firestore)) => ({
@@ -70,6 +73,7 @@ export const Store = signalStore(
       const newTeam = {
         id: Math.random().toString(36).substring(2, 15),
         name: teamName,
+        present: false,
         players: [],
         points: 0,
         gamesPlayed: 0,
@@ -78,11 +82,31 @@ export const Store = signalStore(
         gamesDrawn: 0,
         goalsFor: 0,
         goalsAgainst: 0,
+        numberOfReferees: 0,
       };
       await updateDoc(tournamentDocRef, {
         teams: arrayUnion(newTeam),
       });
       const teams = [...store.teams(), newTeam];
+      patchState(store, {
+        teams,
+      });
+    },
+
+    changePresentStatus: async (teamId: string, present: boolean) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const teams = store.teams().map(team => {
+        if (team.id === teamId) {
+          return {
+            ...team,
+            present,
+          };
+        }
+        return team;
+      });
+      await updateDoc(tournamentDocRef, {
+        teams,
+      });
       patchState(store, {
         teams,
       });
@@ -214,6 +238,25 @@ export const Store = signalStore(
       });
       patchState(store, {
         numberOfAvailableFields,
+      });
+    },
+
+    incrementRefereeCount: async (teamId: string) => {
+      const tournamentDocRef = doc(firestore, 'tournaments', store.id());
+      const teams = store.teams().map(team => {
+        if (team.id === teamId) {
+          return {
+            ...team,
+            numberOfReferees: team.numberOfReferees + 1,
+          };
+        }
+        return team;
+      });
+      await updateDoc(tournamentDocRef, {
+        teams,
+      });
+      patchState(store, {
+        teams,
       });
     },
 

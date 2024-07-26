@@ -6,6 +6,7 @@ import { Store } from '../../../store/tournament.store';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTeamComponent } from './add-team/add-team.component';
 import { getAuth } from 'firebase/auth';
+import { Team } from '../../interfaces';
 
 @Component({
   selector: 'app-teams',
@@ -25,5 +26,9 @@ export class TeamsComponent {
 
   deleteTeam(teamId: string) {
     this.store.deleteTeam(teamId);
+  }
+
+  changeStatus(team: Team) {
+    this.store.changePresentStatus(team.id, !team.present);
   }
 }

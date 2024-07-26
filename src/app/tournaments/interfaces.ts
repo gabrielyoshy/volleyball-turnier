@@ -46,11 +46,13 @@ export interface Match {
   score2: number;
   winnerIds: string[];
   loserIds: string[];
+  refereeId: string;
 }
 
 export interface Team {
   id: string;
   name: string;
+  present: boolean;
   players: Player[];
   points: number;
   gamesPlayed: number;
@@ -59,6 +61,7 @@ export interface Team {
   gamesDrawn: number;
   goalsFor: number;
   goalsAgainst: number;
+  numberOfReferees: number;
 }
 
 export interface Player {

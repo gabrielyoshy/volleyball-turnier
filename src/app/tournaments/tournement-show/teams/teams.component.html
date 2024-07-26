@@ -1,5 +1,6 @@
 <header>
   <h2>{{ 'tournament.teams.title' | translate }}</h2>
+
   @if (auth.currentUser) {
     <button mat-icon-button (click)="addNewTeam()">
       <mat-icon>add</mat-icon>
@@ -11,11 +12,19 @@
   @for (team of store.teams(); track team.id) {
     <li>
       <span>{{ team.name }}</span>
-      @if (auth.currentUser) {
-        <button mat-icon-button (click)="deleteTeam(team.id)">
-          <mat-icon>delete</mat-icon>
+      <div class="buttons">
+        <button mat-icon-button (click)="changeStatus(team)">
+          <mat-icon [class.active]="team.present">{{
+            team.present ? 'toggle_on' : 'toggle_off'
+          }}</mat-icon>
         </button>
-      }
+
+        @if (auth.currentUser) {
+          <button mat-icon-button (click)="deleteTeam(team.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+      </div>
     </li>
   }
 </ul>

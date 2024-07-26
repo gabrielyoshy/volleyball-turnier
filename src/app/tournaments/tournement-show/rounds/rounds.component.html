@@ -48,6 +48,10 @@
               {{ match.start | date: 'HH:mm' }}
             </span>
             <span>
+              {{ 'tournament.rounds.referee' | translate }}
+              {{ match.referee?.name }}
+            </span>
+            <span>
               {{ 'tournament.rounds.fieldNumber' | translate }}
               {{ match.fieldNumber }}
             </span>

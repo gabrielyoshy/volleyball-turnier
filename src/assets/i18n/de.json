@@ -38,7 +38,8 @@
     "teams": {
       "title": "Teams",
       "create": "Neues Team",
-      "name": "Name"
+      "name": "Name",
+      "present": "Anwesend"
     },
     "rounds": {
       "round": "Runde",
@@ -47,7 +48,8 @@
       "pause": "Pause",
       "duration": "Dauer",
       "changeTimes": "Zeiten ändern",
-      "fieldNumber": "Feldnummer"
+      "fieldNumber": "Feldnummer",
+      "referee": "Schiedsrichter"
     },
     "positions": {
       "title": "Platzierungen",
