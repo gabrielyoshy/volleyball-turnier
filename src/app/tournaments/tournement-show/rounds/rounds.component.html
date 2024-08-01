@@ -40,35 +40,7 @@
     <ul>
       @for (match of selectedRound()?.matches; track match.id) {
         <li>
-          <div class="info">
-            <span>
-              {{ 'tournament.rounds.startTime' | translate }}
-              {{ match.start | date: 'HH:mm' }}
-            </span>
-            <span>
-              {{ 'tournament.rounds.referee' | translate }}
-              {{ match.referee?.name }}
-            </span>
-            <span>
-              {{ 'tournament.rounds.fieldNumber' | translate }}
-              {{ match.fieldNumber }}
-            </span>
-          </div>
-          <div class="team">
-            @for (team of match.teams1; track team.id) {
-              <span>{{ team.name }}</span>
-            }
-          </div>
-          <div class="score" (click)="changeResult(match)">
-            <span>{{ match.score1 }}</span>
-            <span>:</span>
-            <span>{{ match.score2 }}</span>
-          </div>
-          <div class="team">
-            @for (team of match.teams2; track team.id) {
-              <span>{{ team.name }}</span>
-            }
-          </div>
+          <app-match (click)="changeResult(match)" [match]="match"></app-match>
         </li>
       }
     </ul>

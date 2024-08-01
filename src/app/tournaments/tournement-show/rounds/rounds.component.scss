@@ -28,35 +28,6 @@ ul {
   gap: 5px;
 }
 
-li {
-  border: 1px solid var(--border-color);
-  display: grid;
-  grid-template-columns: 80px 1fr 80px;
-
-  .info {
-    grid-column: span 3;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10px;
-    background-color: var(--primary-color);
-    color: var(--primary-color-contrast);
-  }
-}
-
-.score {
-  display: flex;
-  background-color: var(--primary-color);
-  color: var(--primary-color-contrast);
-  width: 100%;
-  justify-content: center;
-}
-
-.team {
-  width: 80px;
-  text-align: center;
-  place-self: center;
-}
-
 .time {
   display: flex;
   padding: 5px;
