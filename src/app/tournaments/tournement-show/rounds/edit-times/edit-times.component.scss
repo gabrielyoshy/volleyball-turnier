@@ -2,3 +2,17 @@ mat-dialog-actions {
   display: flex;
   justify-content: space-between;
 }
+
+h2 {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+h3 {
+  padding: 0 16px;
+  margin: 0;
+}
+
+mat-form-field {
+  width: 100%;
+}

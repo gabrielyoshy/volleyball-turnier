@@ -44,12 +44,13 @@
     "rounds": {
       "round": "Runde",
       "results": "Ergebnisse",
-      "startTime": "Start um: ",
+      "startTime": "Start um ",
       "pause": "Pause",
       "duration": "Dauer",
       "changeTimes": "Zeiten ändern",
       "fieldNumber": "Feldnummer",
-      "referee": "Schiedsrichter"
+      "referee": "Schiedsrichter",
+      "warning": "* Wenn die Änderungen bestätigt werden, wird die Runde neu gestartet."
     },
     "positions": {
       "title": "Platzierungen",

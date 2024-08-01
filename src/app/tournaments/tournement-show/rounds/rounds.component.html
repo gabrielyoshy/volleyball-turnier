@@ -20,24 +20,22 @@
   </header>
   <main>
     <div class="time" (click)="changeTimes()">
-      <span>
-        {{ 'tournament.rounds.startTime' | translate }}
-        {{ selectedRound()?.start | date: 'HH:mm' }}</span
-      >
-      <span>
-        {{ 'tournament.rounds.pause' | translate }}
-        {{ selectedRound()?.pause | date: 'HH:mm' }}</span
-      >
-      <span>
-        {{ 'tournament.rounds.duration' | translate }}
-        {{ selectedRound()?.duration | date: 'HH:mm' }}</span
-      >
+      <mat-icon>access_time</mat-icon>
+      <div class="info">
+        <span class="highlighted">
+          {{ 'tournament.rounds.startTime' | translate }}
+          {{ selectedRound()?.start | date: 'HH:mm' }}
+        </span>
+        <span>
+          {{ 'tournament.rounds.pause' | translate }}
+          {{ selectedRound()?.pause | date: 'HH:mm' }}
+        </span>
+        <span>
+          {{ 'tournament.rounds.duration' | translate }}
+          {{ selectedRound()?.duration | date: 'HH:mm' }}
+        </span>
+      </div>
     </div>
-    @if (selectedRound()?.status === 'not-started') {
-      <button (click)="startRound()" class="primary" mat-flat-button>
-        start
-      </button>
-    }
 
     <ul>
       @for (match of selectedRound()?.matches; track match.id) {
@@ -76,7 +74,11 @@
     </ul>
 
     @if (selectedRound()?.status === 'in-progress') {
-      <button (click)="print()" class="primary" mat-flat-button>
+      <button
+        class="print-button"
+        (click)="print()"
+        class="primary"
+        mat-flat-button>
         {{ 'global.print' | translate }}
       </button>
     }

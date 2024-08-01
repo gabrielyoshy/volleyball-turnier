@@ -10,7 +10,14 @@ h2 {
 }
 
 main {
-  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 55px);
+
+  ul {
+    flex: 1;
+    overflow-y: auto;
+  }
 }
 
 ul {
@@ -52,14 +59,26 @@ li {
 
 .time {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
   padding: 5px;
   border: 1px solid var(--border-color);
+  align-items: center;
+  gap: 12px;
+
+  mat-icon {
+    font-size: 40px;
+    height: 40px !important;
+    width: 40px !important;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-button {
-  width: 100%;
+.highlighted {
+  font-weight: 500;
+  font-size: 16px;
 }
 
 @media print {

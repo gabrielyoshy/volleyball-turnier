@@ -61,6 +61,7 @@ export class RoundsComponent {
   }
 
   startRound() {
+    console.log('startRound');
     const round = this.selectedRound();
     if (!round) {
       return;
@@ -115,7 +116,6 @@ export class RoundsComponent {
 
       matches.forEach(match => {
         const matchesSameTime = matches.filter(m => m.start === match.start);
-        console.log('matchesSameTime', matchesSameTime);
 
         const availableReferees = teams
           .filter(team =>
@@ -125,7 +125,6 @@ export class RoundsComponent {
             )
           )
           .sort((a, b) => a.numberOfReferees - b.numberOfReferees);
-        console.log('availableReferees', availableReferees);
 
         match.refereeId = availableReferees[0].id;
 
@@ -134,23 +133,6 @@ export class RoundsComponent {
           referee.numberOfReferees++;
           this.store.incrementRefereeCount(match.refereeId);
         }
-
-        console.log('time', match.start);
-
-        console.log(
-          'team1',
-          teams.find(team => team.id === match.team1Ids[0])?.name
-        );
-        console.log(
-          'team2',
-          teams.find(team => team.id === match.team2Ids[0])?.name
-        );
-        console.log(
-          'referee',
-          teams.find(team => team.id === match.refereeId)?.name
-        );
-
-        console.log('availableReferees', availableReferees);
       });
 
       const roundId = round.id;
@@ -174,8 +156,14 @@ export class RoundsComponent {
       return;
     }
 
-    this.dialog.open(EditTimesComponent, {
+    const dialogObs$ = this.dialog.open(EditTimesComponent, {
       data: round,
+    });
+
+    dialogObs$.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.startRound();
+      }
     });
   }
 

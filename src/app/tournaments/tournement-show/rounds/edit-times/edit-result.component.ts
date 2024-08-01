@@ -74,7 +74,8 @@ export class EditTimesComponent {
       datePause.toString() || '',
       dateDuration.toString() || ''
     );
-    this.dialogRef.close();
+
+    this.dialogRef.close({ result: true });
   }
 
   close() {

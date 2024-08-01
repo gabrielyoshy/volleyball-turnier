@@ -52,13 +52,17 @@
   </li>
 
   <li class="list">
-    <button mat-icon-button (click)="changeTypeToLeft()">
+    <button mat-icon-button (click)="changeTypeToLeft()" [disabled]="true">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
     <p>
       {{ 'tournament.general.types.' + store.type() | translate }}
     </p>
-    <button class="right" mat-icon-button (click)="changeTypeToRight()">
+    <button
+      class="right"
+      mat-icon-button
+      (click)="changeTypeToRight()"
+      [disabled]="true">
       <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
   </li>
