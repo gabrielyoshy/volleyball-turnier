@@ -9,11 +9,18 @@ import { EditResultComponent } from './edit-result/edit-result.component';
 import { CommonModule } from '@angular/common';
 import { getAuth } from '@angular/fire/auth';
 import { EditTimesComponent } from './edit-times/edit-result.component';
+import { MatchComponent } from './match/match.component';
 
 @Component({
   selector: 'app-rounds',
   standalone: true,
-  imports: [TranslateModule, MatButtonModule, MatIconModule, CommonModule],
+  imports: [
+    TranslateModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+    MatchComponent,
+  ],
   templateUrl: './rounds.component.html',
   styleUrl: './rounds.component.scss',
 })

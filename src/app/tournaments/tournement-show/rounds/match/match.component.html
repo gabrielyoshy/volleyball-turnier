@@ -1,31 +1,48 @@
-<li>
+<main>
+  <div class="teams">
+    <div class="names">
+      @for (team of match.teams1; track team.id) {
+        <span>{{ team.name }}</span>
+      }
+    </div>
+
+    <div class="goals">
+      <span>{{ match.score1 }}</span>
+    </div>
+
+    @if (match.team1Ids.toString() == match.winnerIds.toString()) {
+      <mat-icon>arrow_left</mat-icon>
+    }
+
+    <div class="names">
+      @for (team of match.teams2; track team.id) {
+        <span>{{ team.name }}</span>
+      }
+    </div>
+
+    <div class="goals">
+      <span>{{ match.score2 }}</span>
+    </div>
+
+    @if (match.team2Ids.toString() == match.winnerIds.toString()) {
+      <mat-icon>arrow_left</mat-icon>
+    }
+  </div>
+
   <div class="info">
     <span>
       {{ 'tournament.rounds.startTime' | translate }}
       {{ match.start | date: 'HH:mm' }}
     </span>
+    <div class="field">
+      <span>{{ 'tournament.rounds.fieldNumber' | translate }}</span>
+      <div class="field-number">
+        {{ match.fieldNumber }}
+      </div>
+    </div>
     <span>
       {{ 'tournament.rounds.referee' | translate }}
       {{ match.referee?.name }}
     </span>
-    <span>
-      {{ 'tournament.rounds.fieldNumber' | translate }}
-      {{ match.fieldNumber }}
-    </span>
   </div>
-  <div class="team">
-    @for (team of match.teams1; track team.id) {
-      <span>{{ team.name }}</span>
-    }
-  </div>
-  <div class="score">
-    <span>{{ match.score1 }}</span>
-    <span>:</span>
-    <span>{{ match.score2 }}</span>
-  </div>
-  <div class="team">
-    @for (team of match.teams2; track team.id) {
-      <span>{{ team.name }}</span>
-    }
-  </div>
-</li>
+</main>
