@@ -3,13 +3,15 @@ import { Store } from '../../../store/tournament.store';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { Match, RoundStatus, TournamentType } from '../../interfaces';
+import { Match, TournamentType } from '../../interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { EditResultComponent } from './edit-result/edit-result.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { getAuth } from '@angular/fire/auth';
 import { EditTimesComponent } from './edit-times/edit-result.component';
 import { MatchComponent } from './match/match.component';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-rounds',
@@ -23,10 +25,12 @@ import { MatchComponent } from './match/match.component';
   ],
   templateUrl: './rounds.component.html',
   styleUrl: './rounds.component.scss',
+  providers: [DatePipe],
 })
 export class RoundsComponent {
   store = inject(Store);
   dialog = inject(MatDialog);
+  datePipe = inject(DatePipe);
   selectedRoundIndex = signal(0);
   auth = getAuth();
   selectedRound = computed(() => {
@@ -175,6 +179,90 @@ export class RoundsComponent {
   }
 
   print() {
-    window.print();
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const matches = this.selectedRound()?.matches || [];
+
+    const columns = [
+      { header: 'Start', dataKey: 'start' },
+      { header: 'Field #', dataKey: 'fieldNumber' },
+      { header: 'Team 1', dataKey: 'team1' },
+      { header: 'Team 2', dataKey: 'team2' },
+      { header: 'Schiedsrichter', dataKey: 'referee' },
+    ];
+
+    const rows = matches.map(match => ({
+      start: this.datePipe.transform(match.start, 'HH:mm'),
+      fieldNumber: match.fieldNumber,
+      team1: match.teams1.map(team => team.name).join(', '),
+      team2: match.teams2.map(team => team.name).join(', '),
+      referee: match.referee?.name,
+    }));
+
+    (doc as any).autoTable({
+      head: [columns.map(col => col.header)],
+      body: rows.map(row => Object.values(row)),
+      startY: 20,
+      margin: { top: 20, left: 10, right: 10 },
+      styles: { fontSize: 10, cellPadding: 3 },
+      headStyles: { fillColor: [0, 123, 255] },
+      alternateRowStyles: { fillColor: [240, 240, 240] },
+      theme: 'grid',
+    });
+
+    matches.forEach((match, index) => {
+      doc.addPage();
+
+      const matchDetails = {
+        referee: match.referee?.name || 'N/A',
+        fieldNumber: match.fieldNumber,
+        startTime: this.datePipe.transform(match.start, 'HH:mm'),
+        team1: match.teams1.map(team => team.name).join(', '),
+        team2: match.teams2.map(team => team.name).join(', '),
+      };
+
+      // Título de la tabla
+      doc.setFontSize(16);
+      doc.setTextColor('#007bff');
+      doc.text(`Spiel ${index + 1} Ergebnisliste`, 105, 15, {
+        align: 'center',
+      });
+
+      // Información del partido en una o dos líneas
+      doc.setFontSize(10);
+      doc.setTextColor('#000000');
+      const matchInfo = `Schiedsrichter: ${matchDetails.referee} | Field #: ${matchDetails.fieldNumber} | Start Time: ${matchDetails.startTime}`;
+      const teamsInfo = `Team 1: ${matchDetails.team1} vs Team 2: ${matchDetails.team2}`;
+      doc.text(matchInfo, 10, 25);
+      doc.text(teamsInfo, 10, 30);
+
+      // Generar tabla de puntuación
+      const scoreRows = Array.from({ length: 30 }, (_, i) => ({
+        point: i + 1,
+        team1Score: '',
+        team2Score: '',
+      }));
+
+      // Tabla de puntuación con filas más pequeñas
+      const firstTableY = 35; // Posición Y inicial para la tabla
+      (doc as any).autoTable({
+        head: [['Punkte', matchDetails.team1, matchDetails.team2]],
+        body: scoreRows.map(row => [row.point, row.team1Score, row.team2Score]),
+        startY: firstTableY,
+        margin: { top: 0, left: 10, right: 10 },
+        styles: {
+          fontSize: 8, // Tamaño de fuente reducido
+          cellPadding: 1, // Padding de celda reducido
+          halign: 'center', // Alineación horizontal
+          lineHeight: 1, // Altura de línea mínima
+        },
+        headStyles: { fillColor: [0, 123, 255], fontSize: 8, cellPadding: 1 },
+        alternateRowStyles: { fillColor: [240, 240, 240] },
+        theme: 'grid',
+        tableWidth: 'auto', // Ajusta automáticamente el ancho de la tabla
+      });
+    });
+
+    // Guardar el PDF
+    doc.save('Match_Report.pdf');
   }
 }
